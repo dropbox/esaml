@@ -334,18 +334,18 @@ block_decrypt("http://www.w3.org/2009/xmlenc11#aes128-gcm", SymmetricKey, Cipher
     %% IV: 12 bytes and Tag data: 16 bytes
     EncryptedDataSize = byte_size(CipherValue) - 12 - 16,
     <<IV:12/binary, EncryptedData:EncryptedDataSize/binary, Tag:16/binary>> = CipherValue,
-    DecryptedData = crypto:block_decrypt(aes_gcm, SymmetricKey, IV, {<<>>, EncryptedData, Tag}),
+    DecryptedData = crypto:crypto_one_time_aead(aes_128_gcm, SymmetricKey, IV, EncryptedData, <<>>, Tag, false),
     binary_to_list(DecryptedData);
 
 block_decrypt("http://www.w3.org/2001/04/xmlenc#aes128-cbc", SymmetricKey, CipherValue) ->
     <<IV:16/binary, EncryptedData/binary>> = CipherValue,
-    DecryptedData = crypto:block_decrypt(aes_cbc128, SymmetricKey, IV, EncryptedData),
+    DecryptedData = crypto:crypto_one_time(aes_128_cbc, SymmetricKey, IV, EncryptedData, false),
     IsPadding = fun(X) -> X < 16 end,
     lists:reverse(lists:dropwhile(IsPadding, lists:reverse(binary_to_list(DecryptedData))));
 
 block_decrypt("http://www.w3.org/2001/04/xmlenc#aes256-cbc", SymmetricKey, CipherValue) ->
     <<IV:16/binary, EncryptedData/binary>> = CipherValue,
-    DecryptedData = crypto:block_decrypt(aes_cbc256, SymmetricKey, IV, EncryptedData),
+    DecryptedData = crypto:crypto_one_time(aes_256_cbc, SymmetricKey, IV, EncryptedData, false),
     IsPadding = fun(X) -> X < 16 end,
     lists:reverse(lists:dropwhile(IsPadding, lists:reverse(binary_to_list(DecryptedData)))).
 

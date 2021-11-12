@@ -57,14 +57,14 @@ decode_response(_, SAMLResponse) ->
 encode_http_redirect(IdpTarget, SignedXml, Username, RelayState) ->
   Type = xml_payload_type(SignedXml),
   Req = lists:flatten(xmerl:export([SignedXml], xmerl_xml)),
-  Param = http_uri:encode(base64:encode_to_string(zlib:zip(Req))),
-  RelayStateEsc = http_uri:encode(binary_to_list(RelayState)),
+  Param = uri_string:normalize(base64:encode_to_string(zlib:zip(Req))),
+  RelayStateEsc = uri_string:normalize(binary_to_list(RelayState)),
   FirstParamDelimiter = case lists:member($?, IdpTarget) of true -> "&"; false -> "?" end,
   Username_Part = redirect_username_part(Username),
   iolist_to_binary([IdpTarget, FirstParamDelimiter, "SAMLEncoding=", ?deflate, "&", Type, "=", Param, "&RelayState=", RelayStateEsc | Username_Part]).
 
 redirect_username_part(Username) when is_binary(Username), size(Username) > 0 ->
-  ["&username=", http_uri:encode(binary_to_list(Username))];
+  ["&username=", uri_string:normalize(binary_to_list(Username))];
 redirect_username_part(_Other) -> [].
 
 %% @doc Encode a SAMLRequest (or SAMLResponse) as an HTTP-POST binding

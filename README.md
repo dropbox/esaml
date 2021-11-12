@@ -1,5 +1,7 @@
 An implementation of the Security Assertion Markup Language (SAML) in Erlang. So far this supports enough of the standard to act as a Service Provider (SP) to perform authentication with SAML. It has been tested extensively against the SimpleSAMLphp IdP and can be used in production.
 
+Please read [this](CONTRIBUTORS.md) in order to make contributions.
+
 ### Supported protocols
 
 The SAML standard refers to a flow of request/responses that make up one concrete action as a "protocol". Currently all of the basic Single-Sign-On and Single-Logout protocols are supported. There is no support at present for the optional Artifact Resolution, NameID Management, or NameID Mapping protocols.
@@ -51,9 +53,3 @@ You can also tap straight into lower-level APIs in `esaml` if `esaml_cowboy` doe
 This is particularly useful if you want to implement SOAP endpoints using SAML.
 
 > The Elixir library `Samly` is one such implementation. It dose not use `esaml_cowboy`. Instead it relies on the lower-level APIs and uses Elixir `Plug` and `Cowboy` directly for endpoints/routing.
-
-### Contributions
-
-Pull requests are always welcome for bug fixes and improvements. Fixes that enable compatibility with different IdP implementations are usually welcome, but please ensure they do not come at the expense of compatibility with another IdP. `esaml` prefers to follow as closely to the SAML standards as possible.
-
-Bugs/issues opened without patches are also welcome, but might take a lot longer to be looked at. ;)

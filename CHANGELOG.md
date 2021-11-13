@@ -2,7 +2,8 @@
 
 All changes are in the `main` branch (`master` remains unchanged).
 
-### v4.2.1
+### v4.3.0
++   Update minor version due to using non-deprecated functions which may break previously supported OTP versions
 +   Update license copyright
 +   Remove overly restrictive semantic versioning of deps for hex in elixir
 +   Modify APIs to use non-deprecated functions for recent versions of erlang

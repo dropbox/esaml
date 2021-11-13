@@ -1,7 +1,7 @@
 {application, esaml,
     [
         {description, "SAML Server Provider library for erlang"},
-        {vsn, "4.2.1"},
+        {vsn, "4.3.0"},
         {modules, []},
         {registered, []},
         {applications, [

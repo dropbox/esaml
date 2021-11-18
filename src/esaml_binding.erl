@@ -57,7 +57,8 @@ decode_response(_, SAMLResponse) ->
 encode_http_redirect(IdpTarget, SignedXml, Username, RelayState) ->
   Type = xml_payload_type(SignedXml),
   Req = lists:flatten(xmerl:export([SignedXml], xmerl_xml)),
-  Param = uri_string:normalize(base64:encode_to_string(zlib:zip(Req))),
+  % TODO: unsure how to manage Param since no uri_string function can perform the required percent-encoding
+  Param = http_uri:encode(base64:encode_to_string(zlib:zip(Req))),
   RelayStateEsc = uri_string:normalize(binary_to_list(RelayState)),
   FirstParamDelimiter = case lists:member($?, IdpTarget) of true -> "&"; false -> "?" end,
   Username_Part = redirect_username_part(Username),

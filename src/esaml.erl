@@ -293,11 +293,12 @@ decode_assertion_attributes(Xml) ->
             [Name] ->
                 case xmerl_xpath:string("saml:AttributeValue/text()", AttrElem, [{namespace, Ns}]) of
                     [#xmlText{value = Value}] ->
-                        [{common_attrib_map(Name), Value} | In];
+                        [{common_attrib_map(Name), Value} | [{Name, Value} | In]];
                     List ->
                         if (length(List) > 0) ->
                             Value = [X#xmlText.value || X <- List, element(1, X) =:= xmlText],
-                            [{common_attrib_map(Name), Value} | In];
+                            [{common_attrib_map(Name), Value} | [{Name, Value} | In]];
+
                         true ->
                             In
                         end
